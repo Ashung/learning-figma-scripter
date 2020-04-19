@@ -1,5 +1,5 @@
 - **入门**
-    - [前言](readme)
+    - [前言](foreword)
     - [快速入门](quick_start)
     - [编辑器](editor)
     - [编程入门 (WIP)](programming)
