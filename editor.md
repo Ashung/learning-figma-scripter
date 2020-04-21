@@ -1,9 +1,4 @@
-# 编辑器
-
-- x
-- x
-- [kkkkk](xx)
-- [Monaco Editor](https://github.com/microsoft/monaco-editor)，
+# 编辑器的使用
 
 Scripter 的编辑器使用微软的开源 [Monaco Editor](https://github.com/microsoft/monaco-editor)，这是一个基于浏览器的代码编辑器，也是 Visual Studio Code 编辑器的核心，因此如果你使用过 Atom 或 Visual Studio Code，你会发现有些操作是一样的。
 

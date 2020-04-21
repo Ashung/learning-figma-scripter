@@ -227,13 +227,12 @@ function traverse(node, callback) {
 
 ```typescript
 visit(currentPage, (n) => {
-  if (n.type !== 'INSTANCE') {
+  if (n.type === 'INSTANCE') {
+    return false;
+  } else {
     if ((n as SceneNode).visible === false || (n as BlendMixin).opacity === 0) {
       n.remove();
-      return false;
     }
-  } else {
-    return false;
   }
 });
 ```
@@ -347,14 +346,13 @@ function inInstance(node): boolean {
 
 ```typescript
 for (let page of figma.root.children) {
-  visit(page, (n) => {
-    if (n.type !== 'INSTANCE') {
+  visit(currentPage, (n) => {
+    if (n.type === 'INSTANCE') {
+      return false;
+    } else {
       if ((n as SceneNode).visible === false || (n as BlendMixin).opacity === 0) {
         n.remove();
-        return false;
       }
-    } else {
-      return false;
     }
   });
 }

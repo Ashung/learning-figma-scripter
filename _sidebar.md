@@ -1,11 +1,15 @@
 - **入门**
     - [前言](foreword)
     - [快速入门](quick_start)
-    - [编辑器](editor)
-    - [编程入门 (WIP)](programming)
+    - [编辑器的使用](editor)
+    - [Scripter 脚本资源](scripts)
 
-- **资源**
-    - [代码片段](code_snippets)
+- **编程入门**
+    - [基础知识(WIP)](base)
+    - [数据类型(WIP)](data_type)
+    - [字符串(WIP)](string)
+    - [数组(WIP)](array)
+    - [函数(WIP)](function)
 
 - **基础**
     - [图层选择与查找](selection)
@@ -18,7 +22,7 @@
     - [位图 (WIP)](image)
     - [组件 (WIP)](component)
 
-- **有用的链接**
+- **附录**
     - [Figma Plugin API 声明文件](figma_api)
     - [Scripter API 声明文件](scripter_api)
     - [现代 JavaScript 教程](https://zh.javascript.info/)
