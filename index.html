@@ -89,7 +89,11 @@
             }
         },
         formatUpdated: '{YYYY}-{MM}-{DD} {HH}:{mm}',
-        homepage: 'foreword.md',
+        loadSidebar: 'content/_sidebar.md',
+        homepage: 'content/foreword.md',
+        alias: {
+            '/.*/_sidebar.md': 'content/_sidebar.md'
+        },
         markdown: {
             renderer: {
                 code: function (code, lang) {
@@ -113,19 +117,21 @@
             (hook, vm) => {
                 const tocToggle = document.createElement('button');
                 const toc = document.createElement('ul');
-                tocToggle.className = 'toc-toggle';
-                toc.className = 'toc';
-                document.body.appendChild(tocToggle);
-                document.body.appendChild(toc);
-                document.addEventListener('click', e => {
-                    if (!e.path.includes(toc) && !e.path.includes(tocToggle)) {
-                        toc.style.opacity = '0';
-                        setTimeout(() => {
-                            toc.style.top = '0';
-                            toc.style.display = 'none';
-                        }, 200);
-                    }
-                });
+                hook.ready(function() {
+                    tocToggle.className = 'toc-toggle';
+                    toc.className = 'toc';
+                    document.body.appendChild(tocToggle);
+                    document.body.appendChild(toc);
+                    document.addEventListener('click', e => {
+                        if (!e.path.includes(toc) && !e.path.includes(tocToggle)) {
+                            toc.style.opacity = '0';
+                            setTimeout(() => {
+                                toc.style.top = '0';
+                                toc.style.display = 'none';
+                            }, 200);
+                        }
+                    });
+                }),
                 hook.doneEach(() => {
                     tocToggle.onclick = () => {
                         toc.innerHTML = '';

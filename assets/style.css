@@ -13,7 +13,7 @@ html, body {
 }
 body {
   color: var(--text-color);
-  font: 16px var(--font);
+  font: 15px var(--font);
   margin: 0;
   padding: 0;
 }
@@ -51,7 +51,7 @@ body.close .content {
   }
 }
 
-div#app {
+#app {
   font-size: 2rem;
   margin: 40vh auto;
   text-align: center;
@@ -185,7 +185,7 @@ div#app {
 .markdown-section {
   margin: 0 auto;
   max-width: 660px;
-  word-break: break-all;
+  word-break: break-word;
 }
 .markdown-section * {
   box-sizing: border-box;
@@ -301,8 +301,8 @@ div#app {
   margin: 1rem 0;
 }
 .markdown-section code {
-  font-size: 0.8rem;
-  font-family: 'Roboto Mono', Monaco, courier, monospace;
+  font-size: 0.85rem;
+  font-family: Monaco, courier, monospace;
 }
 .markdown-section pre {
   background-color: #f8f8f8;

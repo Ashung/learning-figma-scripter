@@ -2,11 +2,13 @@
 
 ## 概述
 
-![](images/scripter_banner.png)
+![](../images/scripter_banner.png)
 
 [Scripter](https://www.figma.com/community/plugin/757836922707087381/Scripter) 是由 Figma 公司的设计师 [Rasmus](https://rsms.me/) 开发的[开源](https://github.com/rsms/scripter)插件，可用于运行脚本来做 Figma 的自动化操作，或试验 Figma 插件 API 脚本。
 
 Scripter 使用 TypeScript 作为编程语言，而 Figma 的插件使用 JavaScript，也可以用 TypeScript (最终程序由转为 JavaScript)，即使用了 TypeScript 的插件，代码也不能跟 Scripter 完全通用。Scripter 除了支持绝大部分 Figma  插件 API，还增加一些特有的功能，例如请求网络文件和动画，简化了一些 API 代码。另外 Scripter 不支持浏览器特有的 API，或者引入某个库，所以如果需要某种依赖浏览器 API 或者特定库的功能，则需要做成插件，无法在 Scripter 上实现。由于 Scripter 本身也是一个插件，所以无法再出现一个表单窗口用于参数输入。Scripter 目前无法读取本地文件。
+
+总而言之，可以理解为 Scripter 偏向于在 Figma 已有插件接口的基础上实现自动化操作，而插件则有更多想象空间。
 
 所以除了所有编程语言都会有那些数学运算、循环等等之外，Scripter 可以让 Figma 快速选择和定位特定的图层，创建各种类型图层或修改属性，创建和修改样式组件，读取网络上的数据填充到设计上等等。
 
@@ -24,7 +26,7 @@ Scripter 使用 TypeScript 作为编程语言，而 Figma 的插件使用 JavaSc
 
 ## 界面介绍
 
-![](images/scripter_ui.png)
+![](../images/scripter_ui.png)
 
 ### 界面
 
@@ -85,7 +87,7 @@ figma.viewport.scrollAndZoomIntoView([rect]);
 
 ### 示例 2: 生成艺术
 
-![](images/pattern_example.png)
+![](../images/pattern_example.png)
 
 首先新建一个文档或页面，复制以下代码到新建的脚本中，运行脚本后将创建 800x200 的迷宫图案，实际上是按坐标随机产生左右倾斜 45 度的线段。
 
@@ -115,7 +117,7 @@ for (let x = 0; x < 800; x += 10) {
 
 ### 示例 3: 批量创建填充样式。
 
-![](images/create_fill_style.png)
+![](../images/create_fill_style.png)
 
 首先在页面上创建一些形状并填充不同颜色，将图层名称修改为填充样式的名称，然后复制代码到 Scripter 新建脚本中，运行脚本后，脚本会计算颜色的 16 进制色值和透明度，并将其作为填充样式的描述，最后样式创建成功给图层绑定相应的样式。
 
@@ -142,10 +144,10 @@ for (let node of figma.currentPage.selection) {
 
 ## 保存和共享脚本
 
-用户建立的脚本是自动保存在浏览器上的，如果你同时使用桌面客户端和浏览器端，或者在不同地方使用浏览器端，数据都是不可共享的，而且可能因为清理浏览器导致数据丢失。
+用户建立的脚本是自动保存在浏览器上的，如果你同时使用桌面客户端和浏览器端，或者在不同地方使用浏览器端，数据都是不可共享的，而且可能因为清理浏览器数据导致脚本文件丢失。
 
 Scripter 提供一个 “Save to Figma File” 的功能，实际上是将当前的脚本保存到 Scripter 创建一组图层上。图层组内有一个隐藏的 Description 文本图层，可以将其显示出来，并添加描述。选中这组图层时，右侧面板的底部会出现插件信息，共享此文件时也同时共享了文件上的脚本，但这种方式会因图层被删除而导致数据丢失。使用这种方式时，要将这个脚本图层放在显眼的地方，并做好备注，以及和写作者沟通好防止被误删。
 
 比较保守和安全的做法是本地保存一份，或者使用 [Github](https://github.com/) 或 [Gist](https://gist.github.com/) 管理。
 
-![](images/save_to_figma_file.png)
+![](../images/save_to_figma_file.png)
