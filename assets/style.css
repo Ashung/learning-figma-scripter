@@ -315,7 +315,7 @@ body.close .content {
 .markdown-section pre code {
   display: block;
   overflow: auto;
-  padding: 1.5rem 1rem 1rem;
+  padding: 1rem;
 }
 .markdown-section code::after,
 .markdown-section code::before {

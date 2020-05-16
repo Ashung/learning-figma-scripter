@@ -41,9 +41,13 @@ selection().forEach((n, i) => {
 
 通过 Figma Plugin API  的 `figma.currentPage.selection` 或 Scripter API 的 `setSelection()`，`setSelection()` 参数可以是 `null`、`undefined`、图层或数组，参数是  `null`、`undefined` 时取消所有选择。不能通过重复 `setSelection()` 选择多个图层，必须先获取图层再转为数组。
 
-> `figma.currentPage.selection = ReadonlyArray<SceneNode>`
+```typescript
+figma.currentPage.selection = ReadonlyArray<SceneNode>;
+```
 
-> `setSelection<T extends BaseNode|null|undefined|ReadonlyArray<BaseNode|null|undefined>>(n :T) :T` 
+```typescript
+setSelection<T extends BaseNode|null|undefined|ReadonlyArray<BaseNode|null|undefined>>(n :T) :T
+```
 
 #### 示例：选择选中图层的子级
 
@@ -95,55 +99,85 @@ setSelection(currentPage.children[currentPage.children.length - 1]);
 
 `findChildren()` 遍历元素的第一层子级，返回符合条件的节点的数组，也可以使用 `node.children.filter(callback)` 实现类似功能。遍历第一层子级的顺序为从图层列表中的从下到上。
 
-> `findChildren(callback?: (node: SceneNode) => boolean): SceneNode[]`
+```typescript
+findChildren(callback?: (node: SceneNode) => boolean): SceneNode[]
+```
 
 `findChild()` 遍历元素的第一层子级，返回第一个符合条件的节点，也可以使用 `node.children.find(callback)` 实现类似功能。
 
-> `findChild(callback: (node: SceneNode) => boolean): SceneNode | null`
+```typescript
+findChild(callback: (node: SceneNode) => boolean): SceneNode | null
+```
 
 `findAll()` 遍历元素的所有子级，返回符合条件的节点的数组。遍历所有子级的顺序为从图层列表中的从外到内。
 
-> `findAll(callback?: (node: SceneNode) => boolean): SceneNode[]`
+```typescript
+findAll(callback?: (node: SceneNode) => boolean): SceneNode[]
+```
 
 `findOne()` 遍历元素的所有子级，返回第一个符合条件的节点。
 
-> `findOne(callback: (node: SceneNode) => boolean): SceneNode | null`
+```typescript
+findOne(callback: (node: SceneNode) => boolean): SceneNode | null
+```
 
 ### Scripter API 查找函数
 
 `findOne()` 遍历第一个参数元素的所有子级，返回满足第二参数条件的第一个节点，为找到满足条件节点时返回 `null`。
 
-> `findOne<R extends SceneNode>(scope :BaseNode, p :(n :PageNode|SceneNode) => R|false) :R|null`
+```typescript
+findOne<R extends SceneNode>(scope :BaseNode, p :(n :PageNode|SceneNode) => R|false) :R|null
+```
 
-> `findOne(scope :DocumentNode, p :(n :PageNode|SceneNode) => boolean|undefined) :PageNode|SceneNode|null`
+```typescript
+findOne(scope :DocumentNode, p :(n :PageNode|SceneNode) => boolean|undefined) :PageNode|SceneNode|null
+```
 
-> `findOne(scope :PageNode|SceneNode, p :(n :SceneNode) => boolean|undefined) :SceneNode|null`
+```typescript
+findOne(scope :PageNode|SceneNode, p :(n :SceneNode) => boolean|undefined) :SceneNode|null
+```
 
 `findOne()` 没有 node 参数时，遍历当前页面的所有子级。
 
-> `findOne<R extends SceneNode>(p :(n :SceneNode) => R|false) :R|null`
+```typescript
+findOne<R extends SceneNode>(p :(n :SceneNode) => R|false) :R|null
+```
 
-> `findOne(p :(n :SceneNode) => boolean|undefined) :SceneNode|null`
+```typescript
+findOne(p :(n :SceneNode) => boolean|undefined) :SceneNode|null
+```
 
 `find()` 遍历节点的所有子级，返回所有符合条件的节点。当 node 参数为数组时，遍历数组元素本身及其子级。
 
-> `find<R extends BaseNode>(node :ContainerNode|ReadonlyArray<BaseNode>, predicate :(n :BaseNode) => R|false, options? :FindOptions) :Promise<R[]>`
+```typescript
+find<R extends BaseNode>(node :ContainerNode|ReadonlyArray<BaseNode>, predicate :(n :BaseNode) => R|false, options? :FindOptions) :Promise<R[]>
+```
 
-> `find(node :ContainerNode|ReadonlyArray<BaseNode>, predicate :(n :BaseNode) => boolean|undefined, options? :FindOptions) :Promise<BaseNode[]>`
+```typescript
+find(node :ContainerNode|ReadonlyArray<BaseNode>, predicate :(n :BaseNode) => boolean|undefined, options? :FindOptions) :Promise<BaseNode[]>
+```
 
 没有 node 参数时，遍历当前页面的所有子级。
 
-> `find<R extends BaseNode>(predicate :(n :BaseNode) => R|false, options? :FindOptions) :Promise<R[]>`
+```typescript
+find<R extends BaseNode>(predicate :(n :BaseNode) => R|false, options? :FindOptions) :Promise<R[]>
+```
 
-> `find(predicate :(n :BaseNode) => boolean|undefined, options? :FindOptions) :Promise<BaseNode[]>`
+```typescript
+find(predicate :(n :BaseNode) => boolean|undefined, options? :FindOptions) :Promise<BaseNode[]>
+```
 
 可选的 `options` 参数可以设定是否包含隐藏节点，默认为 false，忽略隐藏图层。
 
-> `FindOptions { includeHidden? :boolean }`
+```typescript
+FindOptions { includeHidden? :boolean }
+```
 
 `visit()` 遍历 node 参数的所有子级，每个子级都调用 visitor 函数，如果 visitor 函数 return false，那么节点的子级就会被忽略。
 
-> `visit(node :ContainerNode|ReadonlyArray<ContainerNode>, visitor :(n :BaseNode) => any) :Promise<void>`
+```typescript
+visit(node :ContainerNode|ReadonlyArray<ContainerNode>, visitor :(n :BaseNode) => any) :Promise<void>
+```
 
 ### 在当前页面中查找
 
@@ -415,6 +449,17 @@ nodes.forEach(n => {
 |  |  | isShape() | TextNode 也被算进 shape |
 |  |  | isImage() | 如果图层列表图标是图片类型，则返回 true。 |
 
+#### 示例：选择当前页面所有位图
+
+```typescript
+let images = await find(n => {
+  return isImage(n) && n
+  }, {
+    includeHidden: true
+});
+setSelection(images);
+```
+
 ### 按属性查找
 
 可以从 Figma plugin API 和 Scripter API 的声明文件中，找到每个节点类型支持的属性，如果要按某个节点类型特有属性查找图层，需要先判断是否为某个节点类型。
@@ -426,5 +471,53 @@ let nodes = await find(n => {
   return isSlice(n) && n.width !== 24 && n.height !== 24;
 }, { includeHidden: true });
 setSelection(nodes);
+```
+
+## 定位图层
+
+定位图层是在画布上居中显示图层，使用 `ViewportAPI.scrollAndZoomIntoView(nodes: ReadonlyArray<BaseNode>)` 方法定位图层。
+
+按图层 ID 查找定位。
+
+```typescript
+let layer = figma.getNodeById('9:1');
+
+if (layer && layer.type !== 'DOCUMENT' && layer.type !== 'PAGE') {
+  figma.currentPage = getPage(layer);
+  figma.currentPage.selection = [layer as SceneNode];
+  figma.viewport.scrollAndZoomIntoView(figma.currentPage.selection);
+}
+
+function getPage(node: BaseNode): PageNode {
+  if (node.type !== 'PAGE') {
+    return getPage(node.parent as BaseNode);
+  } else {
+    return node;
+  }
+}
+```
+
+按图层名查找定位。
+
+```typescript
+let layer = figma.root.children.map(page => {
+  return page.findOne(node => {
+    return node && node.name === 'Polygon';
+  })
+}).find(node => node !== null);
+
+if (layer) {
+  figma.currentPage = getPage(layer);
+  figma.currentPage.selection = [layer as SceneNode];
+  figma.viewport.scrollAndZoomIntoView(figma.currentPage.selection);
+}
+
+function getPage(node: BaseNode): PageNode {
+  if (node.type !== 'PAGE') {
+    return getPage(node.parent as BaseNode);
+  } else {
+    return node;
+  }
+}
 ```
 

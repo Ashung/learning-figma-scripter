@@ -4,7 +4,7 @@
 
 在 Figma plugin API 中只提供了很原始的声明色彩方式，尽管 Scripter API 增加了一些色彩相关函数，但并没有提供实际应用中可能与遇到的例如色彩格式转换或者色彩计算等等，这一章节会详细列出常见的各种色彩相关内容。
 
-通常使用对象直接量方式创建色彩对象，需要注意的是 rgb 的值不是常见的 0 - 255，a 的值不是 0 - 100，而都是 0 - 1。
+通常使用对象直接量方式创建色彩 RGB 或 RGBA 对象，需要注意的是 rgb 的值不是常见的 0 - 255，a 的值不是 0 - 100，而都是 0 - 1。
 
 ```typescript
 let red = { r: 1, g: 0, b: 0};
@@ -14,12 +14,22 @@ let opacityBlack = { r: 0, g: 0, b: 0, a: 0.8 };
  Scripter API 可以使用 `Color()`、`RGB()` 和 `RGBA()` 函数创建色彩对象。`Color()` 支持多种参数，
 
 ```typescript
-let red = Color(1, 0, 0);               // => Color
-let opacityBlack = Color(0, 0, 0, 0.8); // => ColorWithAlpha
-let green = Color('00FF00');            // => Color 或使用 '0F0'
-let gray = Color('CC');                 // => Color
-let red2 = RGB(1, 0, 0);                // => Color
-let opacityBlack2 = RGBA(0, 0, 0, 0.8); // => ColorWithAlpha
+let red = Color(1, 0, 0);               // Color --> RGB 
+let opacityBlack = Color(0, 0, 0, 0.8); // ColorWithAlpha --> Color, RGBA
+let green = Color('00FF00');            // Color 或使用 '0F0'
+let gray = Color('CC');                 // Color
+let red2 = RGB(1, 0, 0);                // Color
+let opacityBlack2 = RGBA(0, 0, 0, 0.8); // ColorWithAlpha
+```
+
+RGB 与 RGBA 之间互转。
+
+```typescript
+let RGBA = {...RGB, a: number} // RGB -> RGBA
+let RGB = {r: RGBA.r, g: RGBA.g, b: RGBA.b} // RGBA -> RGB
+let {r, g, b} = RGBA, RGB = {r, g, b} // RGBA -> RGB
+Color.withAlpha(a: number) // RGB -> RGBA
+ColorWithAlpha.withoutAlpha() // RGBA -> RGB
 ```
 
 Scripter API 还增加了一些色彩常量。
@@ -36,6 +46,7 @@ Scripter API 还增加了一些色彩常量。
 | MAGENTA     | #FF00FF | Color(1   , 0   , 1)   |
 | YELLOW      | #FFFF00 | Color(1   , 1   , 0)   |
 | ORANGE      | #FF8000 | Color(1   , 0.5 , 0)   |
+
 
 ## 色彩比较
 
@@ -78,7 +89,7 @@ print(isSameColor(red1, red2)); // true
 
 各种色彩格式的转换可以从网上查找到具体换算公式，这里仅列出一些常见的转换，为了使转换可以适用于 Figma 插件环境，而不仅局限于 Scripter，这里色彩声明方式用的是 Figma plugin API 的对象直接量。
 
-### Color -> HEX(6-8)
+### RGB/RGBA -> HEX(6-8)
 
 HEX 值 6 或 8 位，8 位格式是 CSS4 和 SVG 中的色彩表示方法，后 2 位为透明度。
 
@@ -101,7 +112,7 @@ function colorToHex(color :{r: number, g: number, b: number, a?: number}) :strin
 }
 ```
 
-### Color -> HEX(6)
+### RGB/RGBA -> HEX(6)
 
 转为 6位 HEX 值时，直接忽略 Color 的透明度值。
 
@@ -126,7 +137,7 @@ function colorToHex(color :{r: number, g: number, b: number, a?: number}) :strin
 }
 ```
 
-### Color -> Android HEX
+### RGB/RGBA -> Android HEX
 
 Android 的 8 位 HEX 值，前 2 位为透明度。
 
@@ -141,7 +152,7 @@ function colorToAndroidHex(color :{r: number, g: number, b: number, a?: number})
 }
 ```
 
-### Color -> RGB(A)
+### RGB/RGBA 255 -> RGB/RGBA
 
 Color 转 RGB，R/G/B 范围 0-255，A 范围 0-100。
 
@@ -159,7 +170,7 @@ function colorToRgb(color :{r: number, g: number, b: number, a?: number}) :{r: n
 }
 ```
 
-### Color -> CSS rgb() / rgba()
+### RGB/RGBA -> CSS rgb() / rgba()
 
 ```typescript
 function colorToCssRgb(color :{r: number, g: number, b: number, a?: number}) :string {
@@ -175,7 +186,7 @@ function colorToCssRgb(color :{r: number, g: number, b: number, a?: number}) :st
 }
 ```
 
-### Color -> NSColor Objective-c
+### RGB/RGBA -> NSColor Objective-c
 
 ```typescript
 function colorToNSColorObjectiveC(color :{r: number, g: number, b: number, a?: number}) :string {
@@ -187,7 +198,7 @@ function colorToNSColorObjectiveC(color :{r: number, g: number, b: number, a?: n
 }
 ```
 
-### Color -> NSColor Swift
+### RGB/RGBA -> NSColor Swift
 
 ```typescript
 function colorToNSColorSwift(color :{r: number, g: number, b: number, a?: number}) :string {
@@ -199,7 +210,7 @@ function colorToNSColorSwift(color :{r: number, g: number, b: number, a?: number
 }
 ```
 
-### Color -> UIColor Objective-c
+### RGB/RGBA -> UIColor Objective-c
 
 ```typescript
 function colorToUIColorObjectiveC(color :{r: number, g: number, b: number, a?: number}) :string {
@@ -211,7 +222,7 @@ function colorToUIColorObjectiveC(color :{r: number, g: number, b: number, a?: n
 }
 ```
 
-### Color -> UIColor Swift
+### RGB/RGBA -> UIColor Swift
 
 ```typescript
 function colorToNSColorObjectiveC(color :{r: number, g: number, b: number, a?: number}) :string {
@@ -223,7 +234,7 @@ function colorToNSColorObjectiveC(color :{r: number, g: number, b: number, a?: n
 }
 ```
 
-### Color -> HSL(A)
+### RGB/RGBA -> HSL(A)
 
 L 范围 0-360，S/L/A 范围 0-100。
 
@@ -255,7 +266,7 @@ function colorToHsl(color :{r: number, g: number, b: number, a?: number}) :{h: n
 }
 ```
 
-### Color -> CSS hsl() / hsla()
+### RGB/RGBA -> CSS hsl() / hsla()
 
 H 范围 0-360，S/L 范围 0-100，A 范围 0-1。
 
@@ -287,7 +298,7 @@ function colorToCssHsl(color :{r: number, g: number, b: number, a?: number}) :st
 }
 ```
 
-### Color -> HSV(A) HSB(A)
+### RGB/RGBA -> HSV(A) HSB(A)
 
 HSB 有些地方称为 HSV，H 范围 0-360，S/V(B)/A 范围 0-100。
 
@@ -319,7 +330,7 @@ function colorToHsv(color :{r: number, g: number, b: number, a?: number}) :{h: n
 }
 ```
 
-### Color -> CMYK
+### RGB/RGBA -> CMYK
 
 C/M/Y/K 范围 0-100。
 
@@ -335,7 +346,7 @@ function colorToCmyk(color :{r: number, g: number, b: number, a?: number}) :{c: 
 }
 ```
 
-### Color -> XYZ
+### RGB/RGBA -> XYZ
 
 X/Y/Z 范围 0-1。
 
@@ -352,7 +363,7 @@ function colorToXyz(color :{r: number, g: number, b: number, a?: number}) :{x: n
 }
 ```
 
-### Color -> Lab
+### RGB/RGBA -> Lab
 
 L 范围 0-100，A/B 范围 -128-127。
 
@@ -375,7 +386,7 @@ function colorToLab(color :{r: number, g: number, b: number, a?: number}) :{l: n
 ```
 
 
-### RGB(A) -> Color
+### RGB/RGBA 255 -> RGB/RGBA
 
 RGB 转 Color，R/G/B 范围 0-255，A 范围 0-100。
 
@@ -393,17 +404,23 @@ function rbgToColor(color :{r: number, g: number, b: number, a?: number}) :{r: n
 }
 ```
 
-### HEX -> Color
+### HEX -> RGB/RGBA
 
 Scripter 的 `Color()` 函数可以使用 3 或 6 位数 HEX 值，但不支持 4 或 8 位。
 
 ```typescript
 function hexToColor(hex :string) :{r: number, g: number, b: number, a?: number} {
-  if (hex.length === 1 || hex.length === 2 || hex.length === 5 || hex.length === 7) {
-    return {r: 0, g: 0, b: 0};
+  if (hex.length === 1} {
+    hex = hex.repeat(6);
+  }
+  if (hex.length === 2 } {
+    hex = hex.repeat(3);
   }
   if (hex.length === 3 || hex.length === 4) {
     hex = hex.split('').map(char => char.repeat(2)).join();
+  }
+  if (hex.length === 5 || hex.length === 7) {
+    return {r: 0, g: 0, b: 0};
   }
   const r = parseInt(hex.substr(0, 2), 16) / 255;
   const g = parseInt(hex.substr(2, 2), 16) / 255;
@@ -417,7 +434,7 @@ function hexToColor(hex :string) :{r: number, g: number, b: number, a?: number} 
 }
 ```
 
-### HSL -> Color
+### HSL -> RGB/RGBA
 
 H 范围 0-360，S/L 范围 0-100，A 范围 0-1。
 
@@ -452,7 +469,7 @@ function hslToColor(hsl :{h: number, s: number, l: number, a?: number}) :{r: num
 }
 ```
 
-### HSB(A) / HSV(A) -> Color
+### HSB(A) / HSV(A) -> RGB/RGBA
 
 H 范围 0-360，S/V(B)/A 范围 0-100。
 
@@ -477,7 +494,7 @@ function hsvToColor(hsv :{h: number, s: number, v: number, a?: number}) :{r: num
 }
 ```
 
-### CMYK -> Color
+### CMYK -> RGB
 
 C/M/Y/K 范围 0-100。
 
@@ -491,7 +508,7 @@ function cmykToColor(cmyk :{c: number, m: number, y: number, k: number}) :{r: nu
 }
 ```
 
-### Lab -> Color
+### Lab -> RGB
 
 L 范围 0-100，A/B 范围 -128-127。
 

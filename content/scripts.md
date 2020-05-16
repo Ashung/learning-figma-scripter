@@ -18,6 +18,8 @@
 
 - Remove All Invisible Layers 删除所有不可见图层
 - Remove Invisible Layers in Current Page 删除当前页面所有不可见图层
+- Hide All Slices 隐藏所有切片
+- Show All Slices 显示所有切片
 
 ### 编辑 Edit
 
