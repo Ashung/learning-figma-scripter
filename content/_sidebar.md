@@ -19,9 +19,15 @@
     - [编辑属性](content/editing_properties)
     - [色彩](content/color)
     - [绘图](content/drawing)
-    - [位图 (WIP)](content/image)
+    - [形状](content/shape)
+    - [位图](content/image)
+    - [文本(WIP)](content/text)
+    - [排版(WIP)](content/layout)
+    - [切片与导出设置(WIP)](content/slice)
+    - [辅助线、网格与布局(WIP)](content/guide)
+    - [样式(WIP)](content/style)
     - [组件 (WIP)](content/component)
-
+    
 - **应用**
     - [查找并替换颜色 (WIP)](content/find_and_replace_color)
 

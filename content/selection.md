@@ -497,19 +497,24 @@ function getPage(node: BaseNode): PageNode {
 }
 ```
 
-按图层名查找定位。
+按图层名查找定位，定义一个按名称查找图层的函数。
 
 ```typescript
-let layer = figma.root.children.map(page => {
-  return page.findOne(node => {
-    return node && node.name === 'Polygon';
-  })
-}).find(node => node !== null);
+let layer = getNodeByName('Polygon 1');
 
 if (layer) {
   figma.currentPage = getPage(layer);
   figma.currentPage.selection = [layer as SceneNode];
   figma.viewport.scrollAndZoomIntoView(figma.currentPage.selection);
+}
+
+function getNodeByName(name: string): SceneNode | undefined {
+  for (let page of figma.root.children) {
+    let findResult = page.findOne(node => node && node.name === name);
+    if (findResult) {
+      return findResult;
+    }
+  }
 }
 
 function getPage(node: BaseNode): PageNode {
@@ -521,3 +526,23 @@ function getPage(node: BaseNode): PageNode {
 }
 ```
 
+有些情况需要更精确的按照类型和名称查找，重新修改 `getNodeByName()` 函数，增加一个可选类型作为可选参数。
+
+```typescript
+let layer = getNodeByName('xxx', 'COMPONENT'); // 查找名为 xxx 的组件
+```
+
+具体实现如下。
+
+```typescript
+function getNodeByName(name: string, nodeType?: string): SceneNode | undefined {
+  for (let page of figma.root.children) {
+    let findResult = page.findOne(node => {
+      return node && node.name === name && (nodeType ? node.type === nodeType : true)
+    });
+    if (findResult) {
+      return findResult;
+    }
+  }
+}
+```

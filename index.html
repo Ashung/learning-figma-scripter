@@ -186,6 +186,26 @@
                         }
                     };
                 });
+            },
+            (hook) => {
+                hook.doneEach(() => {
+                    window.MathJax = {
+                        tex: {
+                            inlineMath: [['$', '$'], ['\\(', '\\)']],
+                            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                        },
+                        chtml: {
+                            scale: 1.2,
+                            displayAlign: 'left'
+                        }
+                    };
+                    (function () {
+                        var script = document.createElement('script');
+                        script.src = '//unpkg.com/mathjax@3.0.5/es5/tex-chtml.js';
+                        script.async = true;
+                        document.head.appendChild(script);
+                    })();
+                });
             }
         ]
     }
