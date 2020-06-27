@@ -229,6 +229,8 @@ layer.innerRadius = 0.382;
 figma.currentPage.appendChild(layer);
 ```
 
+![](../images/star.png)
+
 正 n 角星形是指将圆周上平分为 n 份，n 个端点的连线形成正多边形，而相间隔 1 个以上端点之间的连线形成正 n 星形。如图½ 顶角为 α，外半径与内半径夹角为 β，α 对边内半径为 a，已知值外半径为 c，其对角为 γ。
 
 α 角计算公式，d 表示端点间隔。
@@ -283,9 +285,25 @@ for (let n = 5; n < 20; n++) {
 
 ### 直线
 
-直线没有特殊的属性，`width` 即是直线长度，`height` 一直为 0，通过旋转得到非水平方向直线。这种方式导致要实现两点之间的连线，就需要计算两点之间距离和角度。 
+直线没有特殊的属性，`width` 即是直线长度，`height` 一直为 0，通过旋转得到非水平方向直线。这种方式导致要实现两点之间的连线，就需要计算两点之间距离和角度，公式如下。 
 
+$$|AB|=\sqrt{(x_1-x_2)^2+(y_1-y_2)^2}$$
 
+$$\alpha=tanh({{y_1-y_2}\over{x_1-x_2}})\times180\div\pi$$
+
+由于直线的坐标不是基于中线算的所以需要考虑因描边带来的位置误差。
+
+```typescript
+let [x1, y1, x2, y2] = [0, 0, 500, 300];
+let layer = figma.createLine();
+let length = Math.abs(Math.sqrt((x1-x2)**2+(y1-y2)**2));
+layer.resize(length, 0);
+layer.strokeWeight = 20;
+layer.rotation = -Math.tanh((y1-y2)/(x1-x2)) * 180 / Math.PI;
+layer.x = x1 + Math.sin(layer.rotation*Math.PI/180) * layer.strokeWeight / 2;
+layer.y = y1 + Math.sin((90-layer.rotation)*Math.PI/180) * layer.strokeWeight / 2;
+figma.currentPage.appendChild(layer);
+```
 
 ## 使用 SVG
 
